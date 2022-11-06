@@ -1,0 +1,1 @@
+INFO | 2022-11-06 23:20:49 | program1 | We do be logging though

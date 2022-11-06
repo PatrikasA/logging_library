@@ -46,7 +46,12 @@ void write_to_log(char* program, char* log_message, int message_level)
     char* time_string=malloc(sizeof(char)*255);
     get_current_time(&time_string);
 
-    printf("%s | %s | %s | %s", get_message_level(message_level), time_string, program, log_message);
+    fprintf(LOG,"%s | %s | %s | %s", get_message_level(message_level), time_string, program, log_message);
 
     free(time_string);
+}
+
+FILE** get_file_pointer()
+{
+    return &LOG;
 }
