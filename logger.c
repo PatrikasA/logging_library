@@ -13,16 +13,16 @@ char* get_message_level(int message_level)
 {
     switch(message_level){
         case 1:
-            return "INFO";
+            return "INFO   ";
             break;
         case 2:
             return "WARNING";
             break;
         case 3:
-            return "ERROR";
+            return "ERROR  ";
             break;
         default:
-            return "MISC";
+            return "MISC   ";
             break;
     }
 }

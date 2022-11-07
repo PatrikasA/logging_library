@@ -1,1 +1,1 @@
-INFO | 2022-11-06 23:20:49 | program1 | We do be logging though
+INFO    | 2022-11-07 09:41:41 | program_that_logs | 5 seconds have passed!
