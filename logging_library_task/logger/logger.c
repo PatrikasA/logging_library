@@ -1,6 +1,24 @@
 #include "logger.h"
 
-FILE *LOG = NULL;
+sqlite3* DATABASE = NULL;
+const char* LOG_PATH = "/var/log/logger.db";
+
+void create_database()
+{
+    char* err;
+
+    char* table = "CREATE TABLE IF NOT EXISTS Logs("
+                "id INT,"
+                "message_level TEXT,"
+                "time TEXT,"
+                "program TEXT,"
+                "log_message TEXT);";
+    
+    int rc = sqlite3_exec(DATABASE, table, NULL, NULL, &err);
+    if(rc != SQLITE_OK){
+        printf("Failed to create database at create_database() in logger.c\n");
+    }
+}
 
 void get_current_time(char** time_string)
 {
@@ -27,31 +45,41 @@ char* get_message_level(int message_level)
     }
 }
 
-void open_log_file(char *mode)
+void open_log_file()
 {
-    LOG = fopen(LOG_LOCATION, mode);
-        if(LOG == NULL){
-            printf("Failed to open file\n");
-            exit(1);
-        }
+    int rc = sqlite3_open(LOG_PATH, &DATABASE); 
+    if(rc!=SQLITE_OK){
+        printf("Failed to open database in logger.c\n");
+        return;
+    }
 }
 
 void close_log_file()
 {
-    fclose(LOG);
+    int rc = sqlite3_close(DATABASE); 
+    if(rc!=SQLITE_OK){
+        printf("Failed to close database in logger.c\n");
+        return;
+    }
 }
 
 void write_to_log(char* program, char* log_message, int message_level)
 {
+    char* err;
     char* time_string=malloc(sizeof(char)*255);
     get_current_time(&time_string);
 
-    fprintf(LOG,"%s | %s | %s | %s", get_message_level(message_level), time_string, program, log_message);
-
+    char* temp = "INSERT INTO Logs (message_level, time, program, log_message) VALUES";
+    char dbtext[255];
+    snprintf(dbtext, 255, "%s('%s', '%s', '%s', '%s');",temp, get_message_level(message_level), time_string, program, log_message);
+    int rc = sqlite3_exec(DATABASE, dbtext, NULL, NULL, &err);
+    if(rc != SQLITE_OK){
+        printf("Failed to insert log\n");
+    }
     free(time_string);
 }
 
-FILE** get_file_pointer()
+sqlite3** get_database_pointer()
 {
-    return &LOG;
+    return &DATABASE;
 }

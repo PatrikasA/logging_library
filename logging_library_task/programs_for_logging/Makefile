@@ -3,7 +3,7 @@ CC:=gcc
 CFLAGS:=-Wall -Wextra
 SRC = $(wildcard *.c)
 OBJS = $(SRC:.c=.o)
-LDFLAGS := -L/usr/lib -llogger
+LDFLAGS := -L/usr/lib -llogger -lsqlite3
 
 PREFIX?=/usr
 
