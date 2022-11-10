@@ -4,8 +4,8 @@
 #include <string.h>
 #include <sqlite3.h>
 
-#define LOG_LOCATION "/var/log/tarpine_uzduotis.log"
-//#define LOG_LOCATION "logas.txt"
+sqlite3* DATABASE = NULL;
+const char* LOG_PATH = "/var/log/logger.db";
 
 void create_database();
 void get_current_time(char** time_string);

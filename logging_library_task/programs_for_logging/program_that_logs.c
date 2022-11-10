@@ -4,7 +4,6 @@
 
 int main()
 {
-    int i = 10;
     open_log_file();
     create_database();
     write_to_log("program_that_logs","green is not a creative color\n",1);

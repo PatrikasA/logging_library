@@ -1,11 +1,8 @@
 #include "logger.h"
 
-sqlite3* DATABASE = NULL;
-const char* LOG_PATH = "/var/log/logger.db";
-
 void create_database()
 {
-    char* err;
+    char* err=NULL;
 
     char* table = "CREATE TABLE IF NOT EXISTS Logs("
                 "id INT,"
@@ -18,6 +15,7 @@ void create_database()
     if(rc != SQLITE_OK){
         printf("Failed to create database at create_database() in logger.c\n");
     }
+    sqlite3_free(err);
 }
 
 void get_current_time(char** time_string)
@@ -74,7 +72,7 @@ void write_to_log(char* program, char* log_message, int message_level)
     snprintf(dbtext, 255, "%s('%s', '%s', '%s', '%s');",temp, get_message_level(message_level), time_string, program, log_message);
     int rc = sqlite3_exec(DATABASE, dbtext, NULL, NULL, &err);
     if(rc != SQLITE_OK){
-        printf("Failed to insert log\n");
+        printf("Failed to insert log. Try sudo !!\n");
     }
     free(time_string);
 }
